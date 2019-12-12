@@ -1,0 +1,27 @@
+
+version: '3.4'
+
+services:
+  backend:
+    container_name: backend
+    env_file: .env
+    user: ${CURRENT_UID}
+    build:
+      context: ./backend
+      args:
+        - DEBUG=${COMMON_DEBUG}
+      target: deploy
+    restart: on-failure
+    volumes:
+      - ./backend:/app
+    ports: 
+      - 80:8000
+    networks:
+      private_network:
+
+networks:
+  private_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16
