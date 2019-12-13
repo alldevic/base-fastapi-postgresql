@@ -35,6 +35,7 @@ ALEMBIC_CONFIG: DatabaseURL = DatabaseURL(
 
 REDIS_IP: str = config("REDIS_IP", cast=str, default="redis")
 REDIS_PORT: int = config("REDIS_PORT", cast=int, default=6379)
+REDIS_PASSWORD: str = config("REDIS_PASSWORD", cast=str, default=None)
 
 ARQ_BACKGROUND_FUNCTIONS: Optional[CommaSeparatedStrings] = config(
     "ARQ_BACKGROUND_FUNCTIONS", cast=CommaSeparatedStrings, default=None
