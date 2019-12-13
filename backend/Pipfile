@@ -6,10 +6,19 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+gino = "*"
+arq = "*"
+sqlalchemy-utils = "*"
+alembic = "*"
+psycopg2-binary = "*"
+email_validator = "*"
 
 [dev-packages]
 autopep8 = "*"
+bandit = "*"
 flake8 = "*"
+rope = "*"
+watchgod = "*"
 
 [requires]
 python_version = "3.7"

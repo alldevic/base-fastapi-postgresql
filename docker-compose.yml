@@ -12,6 +12,9 @@ services:
         - DEBUG=${COMMON_DEBUG}
       target: deploy
     restart: on-failure
+    entrypoint: ./docker-entrypoint.sh
+    depends_on: 
+      - postgres_db
     volumes:
       - ./backend:/app
     ports: 
@@ -19,9 +22,71 @@ services:
     networks:
       private_network:
 
+  postgres_db:
+    container_name: postgres_db
+    env_file: .env
+    image: postgres:12-alpine
+    restart: on-failure
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      private_network:
+
+  pgadmin:
+    container_name: pgadmin
+    env_file: .env
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres_db
+    ports:
+      - 5555:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    restart: on-failure
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      private_network:
+
+  redis:
+    image: "redis:5.0-alpine"
+    container_name: redis
+    hostname: redis
+    user: ${CURRENT_UID}
+    command: redis-server --requirepass devpassword
+    volumes:
+      - redis_data:/data
+    depends_on:
+      - backend
+    networks:
+      private_network:
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=devpassword
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
+    networks:
+      private_network:
+
+
 networks:
   private_network:
     ipam:
       driver: default
       config:
         - subnet: 172.25.0.0/16
+
+
+volumes:
+  pgadmin_data:
+  db_data:
+  redis_data:

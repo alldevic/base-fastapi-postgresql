@@ -4,9 +4,9 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /app
 
-RUN apk add --no-cache python3
+RUN apk add --no-cache python3 postgresql-libs
 RUN if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi
-RUN apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev make
+RUN apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev postgresql-dev make
 RUN pip3 install --disable-pip-version-check --no-cache-dir pipenv
 
 WORKDIR /app
@@ -43,4 +43,3 @@ ENV DEBUG ${DEBUG}
 EXPOSE 8000
 COPY --from=build / /
 WORKDIR /app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
