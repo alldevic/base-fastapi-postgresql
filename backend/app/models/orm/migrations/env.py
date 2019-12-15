@@ -1,15 +1,22 @@
 # Native libraries
-from app.settings.globals import ALEMBIC_CONFIG
+import sys
+sys.path.extend(['./'])
+
+######################## --- MODELS FOR MIGRATIONS --- ########################
+from app.application import db
 from app.models.orm.user import User
+
+# To include a model in migrations, add a line here.
+
+###############################################################################
+
+# Third party packages
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from logging.config import fileConfig
-from app.application import db
-import sys
 
-
-sys.path.extend(['./'])
-
+# App imports
+from app.settings.globals import ALEMBIC_CONFIG
 
 config = context.config
 fileConfig(config.config_file_name)
@@ -26,7 +33,9 @@ def run_migrations_offline():
     script output.
     """
     context.configure(
-        url=ALEMBIC_CONFIG.url.__to_string__(hide_password=False), target_metadata=target_metadata, literal_binds=True
+        url=ALEMBIC_CONFIG.url.__to_string__(hide_password=False),
+        target_metadata=target_metadata,
+        literal_binds=True
     )
 
     with context.begin_transaction():
@@ -39,8 +48,8 @@ def run_migrations_online():
     and associate a connection with the context.
     """
     connectable = engine_from_config(
-        {"sqlalchemy.url": ALEMBIC_CONFIG.url.__to_string__(
-            hide_password=False)},
+        {"sqlalchemy.url":
+            ALEMBIC_CONFIG.url.__to_string__(hide_password=False)},
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

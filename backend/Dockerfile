@@ -12,8 +12,8 @@ RUN pip3 install --disable-pip-version-check --no-cache-dir pipenv
 WORKDIR /app
 COPY Pipfile Pipfile.lock /app/
 
-RUN pipenv install --system --deploy --ignore-pipfile;
-RUN pip3 uninstall pipenv virtualenv virtualenv-clone certifi pip -y;
+RUN pipenv install --system --deploy --ignore-pipfile
+RUN pip3 uninstall pipenv virtualenv virtualenv-clone certifi pip -y
 
 RUN apk --purge del .build-deps
 

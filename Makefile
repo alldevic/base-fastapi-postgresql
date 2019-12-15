@@ -15,3 +15,5 @@ down:
 	docker-compose down
 sh:
 	docker exec -it /backend /bin/sh
+migrations:
+	docker exec -it /backend alembic revision --autogenerate

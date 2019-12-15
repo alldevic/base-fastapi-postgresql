@@ -31,7 +31,7 @@ echo >&2 "Postgres is up - continuing..."
 echo >&2 "Migrating..."
 # alembic init ./app/models/orm/migrations/
 # alembic revision --autogenerate
-# alembic upgrade head
+alembic upgrade head
 
 if [[ ${DEBUG} == 'TRUE' ]] || [[ ${DEBUG} == 'True' ]] || [[ ${DEBUG} == '1' ]]; then
     echo >&2 "Starting debug server..."
